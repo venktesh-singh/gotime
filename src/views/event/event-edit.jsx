@@ -70,7 +70,7 @@ const EditEvent = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:6002/api/event/`, {     
+      const response = await fetch(`https://go-time.onrender.com/api/event/`, {     
         method: 'post',        
         headers: {
           'Content-Type': 'application/json',
