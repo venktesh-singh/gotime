@@ -73,7 +73,7 @@ const Users = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.data);
   //console.log("Sia User Data", paginationta);    
-    fetch('http://localhost:6002/api/user/')  
+    fetch('https://go-time.onrender.com/api/user/')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);
