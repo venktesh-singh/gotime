@@ -81,6 +81,9 @@ const EventDetail = React.lazy(() => import("../views/event/event-detail"));
 const AddEvent = React.lazy(() => import("../views/event/event-add"));
 const EditEvent = React.lazy(() => import("../views/event/event-edit"));
 
+const Slot = React.lazy(() => import("../views/slot/slot-list"));    
+const SlotDetail = React.lazy(() => import("../views/slot/slot-detail"));
+const AddSlot = React.lazy(() => import("../views/slot/slot-add"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -151,17 +154,21 @@ const routes = [
   { path: "/category", exact: true, name: "Category", component: Category },    
   { path: "/category/category-detail", exact: true, name: "Category Detail", component: CategoryDetail },  
   { path: "/category/category-add", exact: true, name: "Category Add", component: AddCategory },
-  { path: "/category/category-edit", exact: true, name: "Category Add", component: EditCategory },
+  { path: "/category/category-edit", exact: true, name: "Category Edit", component: EditCategory },
 
   { path: "/store", exact: true, name: "Store", component: Store },    
   { path: "/store/store-detail", exact: true, name: "Store Detail", component: StoreDetail },
-  { path: "/store/store-add", exact: true, name: "Store Detail", component: AddStore },
-  { path: "/store/store-edit", exact: true, name: "Store Detail", component: EditStore },
+  { path: "/store/store-add", exact: true, name: "Store Add", component: AddStore },
+  { path: "/store/store-edit", exact: true, name: "Store Edit", component: EditStore },
 
   { path: "/event", exact: true, name: "Event", component: Event },    
   { path: "/event/event-detail", exact: true, name: "Event Detail", component: EventDetail },
-  { path: "/event/event-add", exact: true, name: "Event Detail", component: AddEvent },
-  { path: "/event/event-edit", exact: true, name: "Event Detail", component: EditEvent },
+  { path: "/event/event-add", exact: true, name: "Event Add", component: AddEvent },
+  { path: "/event/event-edit", exact: true, name: "Event Edit", component: EditEvent },
+
+  { path: "/slot", exact: true, name: "Slot", component: Slot }, 
+  { path: "/slot/slot-detail", exact: true, name: "Slot Detail", component: SlotDetail },
+  { path: "/slot/slot-add", exact: true, name: "Slot Add", component: AddSlot },
 ];
 
 export default routes;
