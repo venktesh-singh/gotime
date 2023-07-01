@@ -70,7 +70,7 @@ const EditUser = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:6002/api/user`, {     
+      const response = await fetch(`https://go-time.onrender.com/api/user`, {     
         method: 'post',        
         headers: {
           'Content-Type': 'application/json',

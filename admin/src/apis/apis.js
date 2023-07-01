@@ -1,4 +1,4 @@
-const baseUrlWithSlash = "http://localhost:6002";
+const baseUrlWithSlash = "https://go-time.onrender.com";
   
 const apiUrls = {
   auth: {

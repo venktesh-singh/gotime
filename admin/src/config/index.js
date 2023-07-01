@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://localhost:6002/api';    
+export const BASE_URL = 'https://go-time.onrender.com/api';    
