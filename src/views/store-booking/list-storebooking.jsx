@@ -57,7 +57,7 @@ const StyledTable = styled(Table)(() => ({
 ));
 
 
-const Store = () => {
+const StoreBooking = () => {
   const [page, setPage] = useState(0);
   const [dataList, setDataList] = useState([]);
   
@@ -73,7 +73,7 @@ const Store = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.store);  
   console.log("Sia Store Data", dataList?.store);    
-    fetch('http://localhost:6002/api/store/allstore')  
+    fetch('https://go-time.onrender.com/api/store/allstore')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);
@@ -84,7 +84,7 @@ const Store = () => {
       setDataList(data);
     })
     .catch(error => {
-      console.error('Error fetching User data:', error);
+      console.error('Error fetching Store Booking data:', error);
     });
 
   return (
@@ -102,7 +102,7 @@ const Store = () => {
         variant="contained"
         color="primary"
         component={Link}
-        to="/store/store-add"
+        to="/store-booking/add-storebooking"
       >
         <AddIcon aria-label="AddIcon"   aria-haspopup="true"/>
         Add New Store
@@ -138,14 +138,14 @@ const Store = () => {
                     <TableCell align="center">{moment(subscriber?.createdAt).format('MMMM Do YYYY')}</TableCell>
                     <TableCell align="center">
                     
-                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store/store-detail", state: { subscriber }}} name="User Details" >
+                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store-booking/detail-storebooking", state: { subscriber }}} name="Store booking Details" >
                         <PreviewIcon
                             aria-label="PreviewIcon"
                             aria-haspopup="true">
                             <Icon color="primary">view</Icon>
                         </PreviewIcon>
                       </Link>     
-                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store/store-edit", state: { subscriber }}} name="User Edit">
+                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store-booking/edit-storebooking", state: { subscriber }}} name="Store booking Edit">
                         <EditIcon
                           aria-label="EditIcon"
                           aria-haspopup="true"
@@ -184,6 +184,6 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default StoreBooking;
 
 

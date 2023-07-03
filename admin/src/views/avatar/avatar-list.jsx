@@ -73,7 +73,7 @@ const Avatar = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.data);
   //console.log("Sia User Data", paginationta);    
-    fetch('https://go-time.onrender.com/api/avatar')  
+    fetch('http://localhost:6002/api/avatar')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);

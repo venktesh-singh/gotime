@@ -75,7 +75,7 @@ const Category = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.data);
   //console.log("Sia User Data", dataList);    
-    fetch('https://go-time.onrender.com/api/category')  
+    fetch('http://localhost:6002/api/category')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);

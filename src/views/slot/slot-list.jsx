@@ -75,7 +75,7 @@ const Slot = () => {
   
   const paginationta =  useSelector(state => state?.dataList);
   console.log("Sia User Data", dataList);    
-    fetch('http://localhost:6002/api/slot/allslots')        
+    fetch('https://go-time.onrender.com/api/slot/allslots')        
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);

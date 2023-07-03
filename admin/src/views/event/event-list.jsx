@@ -73,7 +73,7 @@ const EventList = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.data);
   //console.log("Sia Event Data", paginationta);    
-    fetch('https://go-time.onrender.com/api/event/get')  
+    fetch('http://localhost:6002/api/event/get')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);

@@ -126,6 +126,20 @@ const appNavs = [
 
   {
     _tag: "CSidebarNavDropdown",
+    name: "Store Booking",
+    route: "/list-storebooking",
+    icon: "cil-user-follow",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Store Booking List",
+        to: "/list-storebooking",
+      },
+    ],
+  },
+
+  {
+    _tag: "CSidebarNavDropdown",
     name: "Users",
     route: "/users",
     icon: "cil-user-follow",

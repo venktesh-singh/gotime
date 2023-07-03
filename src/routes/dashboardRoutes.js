@@ -1,4 +1,7 @@
 import React from "react";
+import StoreBooking from "src/views/store-booking/list-storebooking";
+import AddStoreBooking from "src/views/store-booking/add-storebooking"
+import DetailStoreBooking from "src/views/store-booking/detail-storebooking"
 
 const Toaster = React.lazy(() =>
   import("../views/notifications/toaster/Toaster")
@@ -169,6 +172,11 @@ const routes = [
   { path: "/slot", exact: true, name: "Slot", component: Slot }, 
   { path: "/slot/slot-detail", exact: true, name: "Slot Detail", component: SlotDetail },
   { path: "/slot/slot-add", exact: true, name: "Slot Add", component: AddSlot },
+
+  { path: "/list-storebooking", exact: true, name: "Store Booking", component: StoreBooking },
+  { path: "/store-booking/add-storebooking", exact: true, name: "Store Booking Add", component: AddStoreBooking }, 
+  { path: "/store-booking/detail-storebooking", exact: true, name: "Store Booking Detail", component: DetailStoreBooking },
+
 ];
 
 export default routes;

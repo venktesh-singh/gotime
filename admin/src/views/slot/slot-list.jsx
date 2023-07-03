@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';  
 import {
   Card,
   Box,
@@ -14,7 +15,7 @@ import {
   TableContainer,
   Paper,
   TablePagination,
-  Button  
+  Button
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import PreviewIcon from '@mui/icons-material/Preview';
@@ -45,22 +46,23 @@ const IMG = styled("img")(() => ({
 }));
 
 const StyledTable = styled(Table)(() => ({
-  minWidth: '1000',
-  whiteSpace: "pre",
-  "& thead": {
-    "& tr": { "& th": { paddingLeft: 0, paddingRight: 0, fontSize: '1rem' } },
-  },
-  "& tbody": {
-    "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-  },
-}
+    minWidth: '1000',
+    whiteSpace: "pre",
+    "& thead": {
+      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0, fontSize: '1rem' } },
+    },
+    "& tbody": {
+      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
+    },
+  }
 ));
 
 
-const Store = () => {
+const Slot = () => {
   const [page, setPage] = useState(0);
+  const history = useHistory();
   const [dataList, setDataList] = useState([]);
-  
+ 
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (_, newPage) => {
@@ -71,9 +73,9 @@ const Store = () => {
       setPage(0);
   };
   
-  const paginationta =  useSelector(state => state?.dataList?.store);  
-  console.log("Sia Store Data", dataList?.store);    
-    fetch('http://localhost:6002/api/store/allstore')  
+  const paginationta =  useSelector(state => state?.dataList);
+  console.log("Sia User Data", dataList);    
+    fetch('http://localhost:6002/api/slot/allslots')        
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);
@@ -86,6 +88,11 @@ const Store = () => {
     .catch(error => {
       console.error('Error fetching User data:', error);
     });
+
+    const handleButtonClick = () => {
+      // Navigate forward to the next page
+      history.goForward()
+    }; 
 
   return (
     <Container>
@@ -102,11 +109,12 @@ const Store = () => {
         variant="contained"
         color="primary"
         component={Link}
-        to="/store/store-add"
+        to="/slot/slot-add"
       >
         <AddIcon aria-label="AddIcon"   aria-haspopup="true"/>
-        Add New Store
+        Add New Slot
       </Button>
+      
       <TableContainer component={Paper} sx={{ px: 0 }}>
         <Card sx={{ px: 0, py: 0 }} elevation={1}>
           <Box width="100%" overflow="auto">
@@ -114,40 +122,34 @@ const Store = () => {
               <TableHead>
                 <TableRow>
                   <TableCell align="center" sx={{ fontWeight: 'bold' }}>S.No.</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Store Pic</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Store Name</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Website Url</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Sport Name</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Start Time</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>End Time</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold' }}>Date</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold' }}>Action</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                {dataList?.store?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((subscriber, index) => (
+                {dataList?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((subscriber, index) => (
                   <TableRow key={index}>
                     <TableCell align="center">{index + 1}</TableCell>
-                    <TableCell align="center">
-                      <FlexBox>
-                          <Box>
-                            <IMG align="center" src={subscriber.image}  alt="IMG" />
-                          </Box>
-                      </FlexBox>
-                    </TableCell>
-                    <TableCell align="center">{subscriber?.store_name}</TableCell>
-                    <TableCell align="center">{subscriber?.website_url}</TableCell>
+                    <TableCell align="center">{subscriber?.sport}</TableCell>
+                    <TableCell align="center">{moment(subscriber?.startTime, 'HH:mm').format('HH:mm')}   </TableCell>
+                    <TableCell align="center">{moment(subscriber?.endTime, 'HH:mm').format('HH:mm')}</TableCell>
                     <TableCell align="center">{moment(subscriber?.createdAt).format('MMMM Do YYYY')}</TableCell>
                     <TableCell align="center">
                     
-                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store/store-detail", state: { subscriber }}} name="User Details" >
+                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/slot/slot-detail", state: { subscriber }}} name="Slot Detail" >
                         <PreviewIcon
                             aria-label="PreviewIcon"
                             aria-haspopup="true">
                             <Icon color="primary">view</Icon>
                         </PreviewIcon>
                       </Link>     
-                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/store/store-edit", state: { subscriber }}} name="User Edit">
+                      <Link sx={{ m: 0.5 }} variant="contained" to={{ pathname: "/slot/slot-edit", state: { subscriber }}} name="Slot Edit">
                         <EditIcon
-                          aria-label="EditIcon"
+                          aria-label="EditIcon"   
                           aria-haspopup="true"
                         >
                           <Icon color="primary">edit</Icon>
@@ -180,10 +182,10 @@ const Store = () => {
           </Box>
         </Card>  
       </TableContainer>
-    </Container>  
+      </Container>
   );
 };
 
-export default Store;
+export default Slot;  
 
 

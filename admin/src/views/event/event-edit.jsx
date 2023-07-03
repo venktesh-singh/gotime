@@ -12,7 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { updateEvent } from 'src/redux/actions/eventAction';
-import { getEventData } from 'src/redux/selectors/eventSelectors';
+import moment from "moment";
   
 const StyledTextField = styled(TextValidator)(({ theme }) => ({
   width: '100%',
@@ -32,18 +32,18 @@ const EditEvent = () => {
   
 
   const [updatedData, setUpdatedData] = useState({
-    _id : EventEdit._id || '',  
-    full_name: EventEdit.full_name || '',
-    height_feet: EventEdit.height_feet || '',
-    height_inches: EventEdit.height_inches || '',
-    weight: EventEdit.weight || '',
-    age : EventEdit.age || '',
-    contact_number: EventEdit.contact_number || '',
-    amount : EventEdit.amount || '',
+    event_name: EventEdit.event_name || '',
+    description: EventEdit.description || '',
+    start_time: moment(EventEdit.start_time, 'HH:mm').format('HH:mm') || '',
+    end_time: moment(EventEdit.end_time, 'HH:mm').format('HH:mm') || '',
+    event_date: moment(EventEdit.event_date).format('YYYY-MM-DD'),
+    address: EventEdit.address || '',
+    max_players: EventEdit.max_players || '',
+    location_hint: EventEdit.location_hint || '',
   });
-
-  //console.log('Event Edit Data:', updatedData); 
-
+  
+  //console.log('Event Edit Data:', updatedData);
+  
   useEffect(() => {
     ValidatorForm.addValidationRule('isNameNotEmpty', (value) => {
       if (value.trim().length === 0) {
@@ -51,11 +51,12 @@ const EditEvent = () => {
       }
       return true;
     });
-
+  
     return () => {
       ValidatorForm.removeValidationRule('isNameNotEmpty');
     };
   }, []);
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -69,7 +70,7 @@ const EditEvent = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`https://go-time.onrender.com/api/event/`, {     
+      const response = await fetch(`http://localhost:6002/api/event/`, {     
         method: 'post',        
         headers: {
           'Content-Type': 'application/json',
@@ -113,89 +114,109 @@ const EditEvent = () => {
           <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
             <Grid container spacing={6}>
               <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                <StyledTextField
-                  type="text"
-                  fullWidth
-                  size="small"
-                  name="full_name"
-                  id="full_name"
-                  value={updatedData.full_name}
-                  onChange={handleInputChange}
-                  label="Full Name"
-                  validators={['required', 'isNameNotEmpty']}
-                  errorMessages={['This field is required', 'Please enter a valid full name']}
-                />
-                <StyledTextField
-                  type="text"
-                  fullWidth
-                  size="small"
-                  name="height_feet"
-                  id="height_feet"
-                  value={updatedData.height_feet}
-                  onChange={handleInputChange}
-                  label="Height in feet"
-                  validators={['required', 'isNameNotEmpty']}
-                  errorMessages={['This field is required', 'Please enter a valid Height in feet']}
-                />
-                <StyledTextField
-                  type="text"
-                  fullWidth
-                  size="small"
-                  name="height_inches"
-                  id="height_inches"
-                  value={updatedData.height_inches}
-                  onChange={handleInputChange}
-                  label="Height In inches"
-                  validators={['required', 'isNameNotEmpty']}
-                  errorMessages={['This field is required', 'Please enter a valid Height in inches']}
-                />
-                <StyledTextField
-                  type="text"
-                  fullWidth
-                  size="small"
-                  name="weight"
-                  id="weight"
-                  label="Weight"
-                  value={updatedData.weight}
-                  onChange={handleInputChange}
-                  validators={['required', 'isNameNotEmpty']}
-                  errorMessages={['This field is required', 'Please enter a valid weight']}
-                />
-                <StyledTextField
-                  type="number"
-                  fullWidth
-                  size="small"
-                  name="contact_number"
-                  id="contact_number"
-                  label="Phone Number"
-                  value={updatedData.contact_number}
-                  onChange={handleInputChange}
-                  validators={['required', 'isNumber']}
-                  errorMessages={['This field is required', 'Please enter a valid contact number']}
-                />
-                <StyledTextField
-                  type="number"
-                  fullWidth
-                  size="small"
-                  name="age"
-                  id="age"
-                  label="Age in Year"
-                  value={updatedData.age}  
-                  onChange={handleInputChange}
-                  validators={['required', 'isNumber']}
-                  errorMessages={['This field is required', 'Please enter a valid Age']}
-                />
-                <StyledTextField
-                  type="number"
-                  fullWidth
-                  size="small"
-                  name="amount"
-                  id="age"
-                  label="Amount"
-                  value={updatedData.amount}  
-                  onChange={handleInputChange}
-                  validators={['required', 'isNumber']}
-                />
+                      <StyledTextField
+                        type="text"
+                        fullWidth
+                        size="small"
+                        name="event_name"
+                        id="event_name"
+                        value={updatedData.event_name}
+                        onChange={handleInputChange}
+                        label="Event name"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        type="text"
+                        fullWidth
+                        size="small"
+                        name="description"
+                        id="description"
+                        value={updatedData.description}
+                        onChange={handleInputChange}
+                        label="Description"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                     
+                      <StyledTextField
+                        type="time"
+                        fullWidth
+                        size="small"
+                        name="start_time"
+                        id="start_time"
+                        value={updatedData.start_time}
+                        onChange={handleInputChange}
+                        label="Start Time"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        type="time"
+                        fullWidth
+                        size="small"
+                        name="end_time"
+                        id="end_time"
+                        value={updatedData.end_time}
+                        onChange={handleInputChange}
+                        label="End Time"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        type="date"
+                        fullWidth
+                        size="small"
+                        name="event_date"
+                        id="event_date"
+                        value={updatedData.event_date}
+                        onChange={handleInputChange}
+                        label="Event Date"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        type="number"
+                        fullWidth
+                        size="small"
+                        name="max_players"
+                        id="max_players"
+                        value={updatedData.max_players}
+                        onChange={handleInputChange}
+                        label="Max players"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        fullWidth
+                        size="small"
+                        name="address"
+                        id="address"
+                        value={updatedData.address}
+                        onChange={handleInputChange}
+                        label="Address"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+
+                      <StyledTextField
+                        fullWidth
+                        size="small"
+                        name="location_hint"
+                        id="location_hint"
+                        value={updatedData.location_hint}
+                        onChange={handleInputChange}
+                        label="Location Hint"
+                        validators={['required', 'isNameNotEmpty']}
+                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                      />
+                
               </Grid>
             </Grid>
 
@@ -210,5 +231,6 @@ const EditEvent = () => {
     </div>
   );
 };
+
 
 export default EditEvent;

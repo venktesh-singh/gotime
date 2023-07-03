@@ -98,6 +98,20 @@ const appNavs = [
   
   {
     _tag: "CSidebarNavDropdown",
+    name: "Slots",
+    route: "/slot",
+    icon: "cil-user-follow",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Slots List",
+        to: "/slot",
+      },
+    ],
+  },
+
+  {
+    _tag: "CSidebarNavDropdown",
     name: "Store",
     route: "/store",
     icon: "cil-user-follow",
