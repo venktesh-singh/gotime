@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
@@ -13,6 +13,9 @@ import SendIcon from '@mui/icons-material/Send';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { updateEvent } from 'src/redux/actions/eventAction';
 import moment from "moment";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css'; 
   
 const StyledTextField = styled(TextValidator)(({ theme }) => ({
   width: '100%',
@@ -29,6 +32,24 @@ const EditEvent = () => {
   const location = useLocation();
   const eventData = location.state;
   const EventEdit = eventData.subscriber
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
+  }, []);
   
 
   const [updatedData, setUpdatedData] = useState({
@@ -40,22 +61,37 @@ const EditEvent = () => {
     address: EventEdit.address || '',
     max_players: EventEdit.max_players || '',
     location_hint: EventEdit.location_hint || '',
+    location:{
+      latitude:latitude,
+      longitude:longitude
+    }
   });
   
-  //console.log('Event Edit Data:', updatedData);
+  console.log('Event Edit Data:', updatedData);
   
   useEffect(() => {
+
     ValidatorForm.addValidationRule('isNameNotEmpty', (value) => {
+      if (typeof value !== 'string') {
+        return false;
+      }
       if (value.trim().length === 0) {
         return false;
       }
       return true;
     });
+
+    ValidatorForm.addValidationRule('isNumber', (value) => {
+      return !isNaN(value);
+    });
   
     return () => {
+      ValidatorForm.removeValidationRule('isNumber');
       ValidatorForm.removeValidationRule('isNameNotEmpty');
-    };
+    }
+  
   }, []);
+  
   
 
   const handleInputChange = (event) => {
@@ -70,25 +106,12 @@ const EditEvent = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`https://go-time.onrender.com/api/event/`, {     
-        method: 'post',        
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedData),
-      });
-
-      if (response.ok) {
-        // Update successful
-        dispatch(updateEvent(updatedData));
-        history.push('/event/event-list');  
-      } else {
-        // Update failed
-        // Handle error scenario
-      }
+      await dispatch(updateEvent(eventData));
+      toast.success('Event Added Successfully!');
+     // history.push('/event/event-list');
     } catch (error) {
-      console.error('Error updating data:', error);
-      // Handle error scenario
+      console.error('Error adding event:', error);
+      toast.error('Failed to add event. Please try again later.');
     }
   };
 
@@ -98,16 +121,28 @@ const EditEvent = () => {
 
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        theme="colored"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Container>
-            <Button
-                sx={{ mb: 2, pl: 1 }}
-                variant="contained"
-                color="primary"
-                onClick={handleButtonClick}
-            >
-                <ArrowBackIcon aria-label="ArrowBackIcon" aria-haspopup="true" />
-                Back
-            </Button>
+        <Button
+          sx={{ mb: 2, pl: 1 }}
+          variant="contained"
+          color="primary"
+          onClick={handleButtonClick}
+        >
+          <ArrowBackIcon aria-label="ArrowBackIcon" aria-haspopup="true" />
+          Back
+        </Button>
 
         <Stack spacing={3}>
         <SimpleCard title="Add New Event">
@@ -189,8 +224,8 @@ const EditEvent = () => {
                         value={updatedData.max_players}
                         onChange={handleInputChange}
                         label="Max players"
-                        validators={['required', 'isNameNotEmpty']}
-                        errorMessages={['This field is required', 'Please enter a valid full name']}
+                        validators={['required', 'isNumber']}
+                        errorMessages={['This field is required', 'Please enter a valid max players']}
                       />
 
                       <StyledTextField

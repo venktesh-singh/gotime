@@ -88,6 +88,8 @@ const Slot = React.lazy(() => import("../views/slot/slot-list"));
 const SlotDetail = React.lazy(() => import("../views/slot/slot-detail"));
 const AddSlot = React.lazy(() => import("../views/slot/slot-add"));
 
+const Challenge = React.lazy(() => import("../views/challenge/challenge")); 
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
@@ -176,6 +178,8 @@ const routes = [
   { path: "/list-storebooking", exact: true, name: "Store Booking", component: StoreBooking },
   { path: "/store-booking/add-storebooking", exact: true, name: "Store Booking Add", component: AddStoreBooking }, 
   { path: "/store-booking/detail-storebooking", exact: true, name: "Store Booking Detail", component: DetailStoreBooking },
+
+  { path: "/challenge", exact: true, name: "Challenge", component: Challenge },
 
 ];
 

@@ -73,7 +73,7 @@ const Store = () => {
   
   const paginationta =  useSelector(state => state?.dataList?.store);  
   console.log("Sia Store Data", dataList?.store);    
-    fetch('https://go-time.onrender.com/api/store/allstore')  
+    fetch('https://gotimeapi.onrender.com/api/store/allstore')    
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);

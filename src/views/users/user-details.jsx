@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Card, styled, Grid, Box, TableBody, TableCell, Table, TableRow, Icon, Button } from "@mui/material";
+import React from "react";
+import { Card, styled, Grid, Box, TableBody, TableCell, Table, TableRow, Button } from "@mui/material";
 import { useLocation,useHistory  } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import moment from "moment";
 
 const CardRoot = styled(Card)(() => ({
     height: '100%',   
@@ -101,18 +100,6 @@ const UserDetail = () => {
                                             <TableRow>
                                                 <TableCell>Full Name </TableCell>
                                                 <TableCell align="center">{userData?.full_name}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>First Name </TableCell>
-                                                <TableCell align="center">{userData?.first_name}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>Middle Name </TableCell>
-                                                <TableCell align="center">{userData?.middle_name}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>Last Name </TableCell>
-                                                <TableCell align="center">{userData?.last_name}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>Email </TableCell>

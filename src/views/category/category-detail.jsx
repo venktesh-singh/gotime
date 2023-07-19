@@ -69,7 +69,7 @@ const CategoryDetail = () => {
         history.go(-1);
     };
 
-    console.log("oder data throgh props", userData);        
+         
     return(
         <Container>     
             <Button

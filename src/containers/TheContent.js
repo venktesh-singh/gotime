@@ -15,10 +15,10 @@ const loading = (
   </div>
 )
 
-const TheContent = () => {
+const TheContent = (dashboard) => {
   return (
-    <main className="c-main">
-      <CContainer fluid>
+    <main className="c-main" style={dashboard ? {} : { paddingTop:'0px' }} >
+      <CContainer fluid style={dashboard ? {} : { padding:'0px' }}>  
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {

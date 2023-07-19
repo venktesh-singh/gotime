@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { Stack } from '@mui/material';
 import { styled } from '@mui/system';
 import SimpleCard from './SimpleCard';
@@ -32,30 +32,48 @@ const StyledTextField = styled(TextField)(() => ({
   marginBottom: '16px',
 }));
 
-
-
 const AddEvent = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
+  }, []);
+  
     const handleSubmit = async (values) => {
-      const formData = new FormData();
-      formData.append('event_name', values.event_name);
-      formData.append('description', values.description);
-      formData.append('start_time', moment(values.start_time, 'HH:mm').format('HH:mm'));
-      formData.append('end_time', moment(values.end_time, 'HH:mm').format('HH:mm'));
-      formData.append('address', values.address);
-      const formattedEventDate = moment(values.event_date).format('YYYY-MM-DD');
-      formData.append('event_date', formattedEventDate);
-      formData.append('max_players', values.max_players);
-      formData.append('location_hint', values.location_hint);
-      //formData.append('longitude', longitude);
-      //formData.append('latitude', latitude);
-
+      const eventData = {
+        event_name: values.event_name,
+        description: values.description,
+        start_time: moment(values.start_time, 'HH:mm').format('HH:mm'),
+        end_time: moment(values.end_time, 'HH:mm').format('HH:mm'),
+        address: values.address,
+        event_date: moment(values.event_date).format('YYYY-MM-DD'),
+        max_players: values.max_players,
+        location_hint: values.location_hint,
+        location:{
+          latitude:latitude,
+          longitude:longitude
+        }
+      };
+  
       try {
-        await dispatch(updateEvent(formData));
+        await dispatch(updateEvent(eventData));
         toast.success('Event Added Successfully!');
-        history.push('/event/event-list');
+       // history.push('/event/event-list');
       } catch (error) {
         console.error('Error adding event:', error);
         toast.error('Failed to add event. Please try again later.');
@@ -211,6 +229,8 @@ const AddEvent = () => {
                         error={Boolean(touched.location_hint && errors.location_hint)}
                         helperText={touched.location_hint && errors.location_hint}
                       />
+                     
+
                     </Grid>
                   </Grid>
                   <Button

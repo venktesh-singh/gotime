@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const commonReducer = (state = initialState, { type, payload, ...rest }) => {
-  console.log(type, "action.type");
+
   switch (type) {
     case "set":
       return { ...state, ...rest };

@@ -70,6 +70,20 @@ const appNavs = [
 
   {
     _tag: "CSidebarNavDropdown",
+    name: "Challenge",
+    route: "/challenge",
+    icon: "cil-user-follow",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Challenge List",
+        to: "/challenge",
+      },
+    ],
+  },
+
+  {
+    _tag: "CSidebarNavDropdown",
     name: "Category",
     route: "/category",
     icon: "cil-user-follow",

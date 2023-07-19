@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom';  
+import { CSVLink } from 'react-csv';
 import {
   Card,
   Box,
@@ -15,7 +16,8 @@ import {
   TableContainer,
   Paper,
   TablePagination,
-  Button
+  Button,
+  TextField
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import PreviewIcon from '@mui/icons-material/Preview';
@@ -30,6 +32,11 @@ const Container = styled('div')(({ theme }) => ({
     marginBottom: '30px',
     [theme.breakpoints.down('sm')]: { marginBottom: '16px' },
   },
+}));
+
+const StyledTextField = styled(TextField)(() => ({
+  marginBottom: '16px',
+  padding:'0px'
 }));
 
 const FlexBox = styled(Box)(() => ({
@@ -62,8 +69,13 @@ const Category = () => {
   const [page, setPage] = useState(0);
   const history = useHistory();
   const [dataList, setDataList] = useState([]);
- 
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchQueryChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+  };
 
   const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -74,8 +86,8 @@ const Category = () => {
   };
   
   const paginationta =  useSelector(state => state?.dataList?.data);
-  //console.log("Sia User Data", dataList);    
-    fetch('https://go-time.onrender.com/api/category')  
+ 
+    fetch('https://gotimeapi.onrender.com/api/category')  
     .then(response => {
       if (!response.ok) {  
         throw new Error('Error: ' + response.status);
@@ -89,10 +101,43 @@ const Category = () => {
       console.error('Error fetching User data:', error);
     });
 
-    const handleButtonClick = () => {
-      // Navigate forward to the next page
-      history.goForward()
-    }; 
+    const handleDownloadCSV = () => {
+      if (!dataList || !dataList.data) {
+        return null;
+      }
+    
+      // Prepare the CSV data
+      const csvData = dataList.data.map((subscriber, index) => {
+        const categoryPic = Array.isArray(subscriber.image) ? subscriber.image.join(', ') : subscriber.image;
+        return {
+          SNo: index + 1,
+          'Category Pic': categoryPic,
+          Name: subscriber?.name,
+          Date: moment(subscriber?.createdAt).format('MMMM Do YYYY'),
+        };
+      });
+    
+      // Define the CSV headers
+      const headers = [
+        { label: 'S.No.', key: 'SNo' },
+        { label: 'Category Pic', key: 'Category Pic' },
+        { label: 'Name', key: 'Name' },
+        { label: 'Date', key: 'Date' },
+      ];
+    
+      // Trigger the CSV download
+      const csvOptions = {
+        filename: 'category_data.csv',
+        headers: headers,
+      };
+    
+      return (
+        <CSVLink data={csvData} {...csvOptions} style={{ color: '#fff', textDecoration: 'none' }}>
+          Download CSV
+        </CSVLink>
+      );
+    };
+    
 
   return (
     <Container>
@@ -114,7 +159,14 @@ const Category = () => {
         <AddIcon aria-label="AddIcon"   aria-haspopup="true"/>
         Add New Category
       </Button>
-      
+      <StyledTextField
+        size="small"
+        type="text"
+        value={searchQuery}
+        onChange={(event) => handleSearchQueryChange(event)}
+        placeholder="Search by Title"
+        style={{ float: 'right',backgroundColor:'#fff',padding: '0px' }}
+      />
       <TableContainer component={Paper} sx={{ px: 0 }}>
         <Card sx={{ px: 0, py: 0 }} elevation={1}>
           <Box width="100%" overflow="auto">
@@ -130,7 +182,12 @@ const Category = () => {
               </TableHead>
 
               <TableBody>
-                {dataList?.data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((subscriber, index) => (
+              {dataList?.data
+                ?.filter((subscriber) =>
+                  subscriber.name &&
+                  subscriber.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((subscriber, index) => (
                   <TableRow key={index}>
                     <TableCell align="center">{index + 1}</TableCell>
                     <TableCell align="center">
@@ -171,7 +228,11 @@ const Category = () => {
                 ))}
               </TableBody>
             </StyledTable>
-            <TablePagination
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2 }}>  
+              <Button variant="contained" >
+                  {handleDownloadCSV()}
+              </Button>
+              <TablePagination
                 sx={{ px: 2 }}  
                 page={page}
                 component="div"
@@ -183,6 +244,7 @@ const Category = () => {
                 nextIconButtonProps={{ "aria-label": "Next Page" }}
                 backIconButtonProps={{ "aria-label": "Previous Page" }}
             />
+            </Box>
           </Box>
         </Card>  
       </TableContainer>

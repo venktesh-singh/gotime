@@ -68,8 +68,7 @@ const AvatarDetail = () => {
         // Navigate back to the previous page
         history.go(-1);
     };
-
-    console.log("oder data throgh props", userData);        
+     
     return(
         <Container>     
             <Button

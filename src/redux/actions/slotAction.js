@@ -5,7 +5,6 @@ export const ADD_SLOT = 'ADD_SLOT';
 export const UPDATE_SLOT = 'UPDATE_SLOT';
 
 export const addupdateSlot = (slotData) => (dispatch) => {
-    console.log("Redux Slot", slotData)
     axios.post(CONSTANT.BASE_URL + `/slot/create_slot`, slotData).then((res) => {   
         dispatch({
             type: UPDATE_SLOT,

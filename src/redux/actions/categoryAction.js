@@ -13,7 +13,7 @@ export const getCategoryList = () => (dispatch) => {
 };
 
 export const addupdateCategory = (catData) => (dispatch) => {
-    console.log("Redux Category", catData);
+   
     const formData = new FormData();  
     formData.append('name', catData.name);
     if (catData.image) {

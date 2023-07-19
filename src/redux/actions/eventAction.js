@@ -15,7 +15,7 @@ export const getEventList = () => (dispatch) => {
 };
 
 export const updateEvent = (eventData) => (dispatch) => {
-    console.log("Redux Event", eventData);
+   
     axios
       .post(CONSTANT.BASE_URL + "/event/", eventData)
       .then((res) => {

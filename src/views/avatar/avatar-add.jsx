@@ -32,8 +32,6 @@ const AddAvatar = () => {
     const history = useHistory();
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
-    //console.log("File Select", selectedFile);
-    //console.log("File Upload", uploading);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*',
@@ -46,7 +44,6 @@ const AddAvatar = () => {
     const handleSubmit = async (values) => {
         const formData = new FormData();
         ///formData.append('name', values.name);  
-        console.log("Selected File:", selectedFile);
         if (selectedFile) {
             formData.append('image', selectedFile);
         } else {

@@ -13,7 +13,7 @@ export const getAvatarList = () => (dispatch) => {
 };
 
 export const addupdateAvatar = (avaData) => (dispatch) => {
-    console.log("Redux Avatar", avaData);
+   
     const formData = new FormData();  
     //formData.append('name', avaData.name);
     if (avaData.image) {
